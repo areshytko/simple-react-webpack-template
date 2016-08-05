@@ -1,7 +1,16 @@
+var HtmlWebpackPlugin = require('html-webpack-plugin');
+var HtmlWebpackPluginConfig = new HtmlWebpackPlugin({
+  template: __dirname + '/app/index.html',
+  filename: 'index.html',
+  inject: 'body'
+});
+
 module.exports = {
-  entry: './index',
+  entry: './app/index.js',
   output: {
-    filename: 'browser-bundle.js'
+    path: "./dist",
+    filename: 'bundle.js',
+    publicPath: '/'
   },
   devtool: 'source-map',
   module: {
@@ -9,10 +18,14 @@ module.exports = {
       {
         test: /\.js$/,
         loader: 'babel-loader',
+        exclude: /node_modules/,
         query: {
           presets: ['es2015', 'react']
         }
       },
     ]
-  }
+  },
+  plugins: [
+    HtmlWebpackPluginConfig
+  ]
 };
