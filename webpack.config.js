@@ -2,15 +2,16 @@ var HtmlWebpackPlugin = require('html-webpack-plugin');
 var HtmlWebpackPluginConfig = new HtmlWebpackPlugin({
   template: __dirname + '/app/index.html',
   filename: 'index.html',
-  inject: 'body'
+  inject: true
 });
 
 module.exports = {
   entry: './app/index.js',
   output: {
-    path: "./dist",
+    path: __dirname + '/dist',
     filename: 'bundle.js',
-    publicPath: '/'
+    //publicPath: '/{@TODO replace this with project name}/dist'
+    publicPath: ''
   },
   devtool: 'source-map',
   module: {
@@ -23,6 +24,7 @@ module.exports = {
           presets: ['es2015', 'react']
         }
       },
+      { test: /\.css$/, loader: "style-loader!css-loader" }
     ]
   },
   plugins: [
