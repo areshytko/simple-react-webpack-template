@@ -1,3 +1,5 @@
+var webpack = require('webpack');
+
 var HtmlWebpackPlugin = require('html-webpack-plugin');
 var HtmlWebpackPluginConfig = new HtmlWebpackPlugin({
   template: __dirname + '/app/index.html',
@@ -6,8 +8,12 @@ var HtmlWebpackPluginConfig = new HtmlWebpackPlugin({
 });
 
 module.exports = {
-  entry: './app/index.js',
-  output: {
+  entry: [
+    'webpack-dev-server/client?http://localhost:8080',
+    'webpack/hot/only-dev-server',
+    './app/index.js'
+  ],
+output: {
     path: __dirname + '/dist',
     filename: 'bundle.js',
     //publicPath: '/{@TODO replace this with project name}/dist'
@@ -18,16 +24,18 @@ module.exports = {
     loaders: [
       {
         test: /\.js$/,
-        loader: 'babel-loader',
-        exclude: /node_modules/,
-        query: {
-          presets: ['es2015', 'react']
-        }
+        loader: 'react-hot!babel',
+        exclude: /node_modules/
       },
       { test: /\.css$/, loader: "style-loader!css-loader" }
     ]
   },
   plugins: [
-    HtmlWebpackPluginConfig
-  ]
+    HtmlWebpackPluginConfig,
+    new webpack.HotModuleReplacementPlugin()
+  ],
+  devServer: {
+    contentBase: './dist',
+    hot: true
+  }
 };
